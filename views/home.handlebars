@@ -1,0 +1,20 @@
+<h1>Cadastre seu livro: </h1>
+<form action="/books/insertbook" method="POST" class="form" enctype="multipart/form-data">
+    <div class="form-control">
+        <label for="title">Título: </label>
+        <input type="text" name="title" placeholder="Digite um título">
+        
+    </div>
+    <div class="form-control">
+        <label for="pageqty">Quantidade de Páginas: </label>
+        <input type="number" name="pageqty" placeholder="Quantas páginas o livro tem?">
+    </div>
+    <div class="form-control">
+        <label for="image">Imagem do Livro: </label>
+        <input type="file" name="image" accept="image/*">
+    </div>
+    <input type="submit" value="Cadastrar">
+</form>
+<div class="accessAvaiableBooks">
+    <a href="/books">Acessar os livros disponíveis</a>
+</div>
