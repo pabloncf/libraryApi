@@ -40,9 +40,10 @@ app.post('/books/insertbook', upload.single('image'), (req, res) => {
     const pageqty = req.body.pageqty;
     const imagePath = `/uploads/${req.file.filename}`;
 
-    const query = `INSERT INTO books (title, pageqty, image_path) VALUES ('${title}', '${pageqty}', '${imagePath}')`
+    const query = `INSERT INTO books (??, ??, ??) VALUES (?, ?, ?)`;
+    const data = ['title', 'pageqty', 'image_path', title, pageqty, imagePath];
 
-    pool.query(query, function (err) {
+    pool.query(query, data, function (err) {
         if (err) {
             console.log(err);
         }
@@ -68,9 +69,10 @@ app.get('/books', (req, res) => {
 app.get('/books/:id', (req, res) => {
     const id = req.params.id;
 
-    const query = `SELECT * FROM books WHERE id = ${id}`;
+    const query = `SELECT * FROM books WHERE ?? = ?`;
+    const data = ['id', id];
 
-    pool.query(query, function (err, data) {
+    pool.query(query, data, function (err, data) {
         if (err) {
             console.log(err);
             return;
@@ -85,9 +87,10 @@ app.get('/books/:id', (req, res) => {
 app.get('/books/edit/:id', (req, res) => {
     const id = req.params.id;
 
-    const sql = `SELECT * FROM books WHERE id = ${id}`;
+    const sql = `SELECT * FROM books WHERE ?? = ?`;
+    const data = ['id', id];
 
-    pool.query(sql, function (err, data) {
+    pool.query(sql, data, function (err, data) {
         if (err) {
             console.log(err);
             return;
@@ -99,16 +102,16 @@ app.get('/books/edit/:id', (req, res) => {
     });
 });
 
-app.post('/books/updatebook', upload.single('image'),(req, res) => {
+app.post('/books/updatebook', upload.single('image'), (req, res) => {
     const id = req.body.id;
     const title = req.body.title;
     const pageqty = req.body.pageqty;
     const imagePath = `/uploads/${req.file.filename}`;
 
+    const sql = `UPDATE books SET ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?`;
+    const data = ['title', title, 'pageqty', pageqty, 'image_path', imagePath, 'id', id];
 
-    const sql = `UPDATE books SET title = '${title}', pageqty = '${pageqty}', image_path = '${imagePath}' WHERE id = ${id}`;
-
-    pool.query(sql, function (err) {
+    pool.query(sql, data, function (err) {
         if (err) {
             console.log(err);
             return;
@@ -121,9 +124,10 @@ app.post('/books/updatebook', upload.single('image'),(req, res) => {
 app.post('/books/remove/:id', (req, res) => {
     const id = req.params.id;
 
-    const sql = `DELETE FROM books WHERE id = ${id}`;
+    const sql = `DELETE FROM books WHERE ?? = ?`;
+    const data = ['id', id]
 
-    pool.query(sql, function (err) {
+    pool.query(sql, data, function (err) {
         if (err) {
             console.log(err);
             return;
@@ -133,7 +137,7 @@ app.post('/books/remove/:id', (req, res) => {
     })
 })
 
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
     res.status(404).render('404');
 });
 
